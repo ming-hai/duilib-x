@@ -1,0 +1,29 @@
+name: ✨ Feature Request / 特性请求
+description: I want a new feature / 我想要新功能
+title: "[Feature]: "
+labels: ["enhancement", "needs-review"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before submitting a feature request:**
+        - Check if the feature has already been requested in [existing issues](https://github.com/3ziye/duilib-x/issues)
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem Description
+      description: Is your feature request related to a problem? Please describe the pain point. 问题描述
+      placeholder: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched for existing feature requests before creating this one 在创建此需求之前，我已搜索过是否存在相关的现有功能请求。
+          required: true

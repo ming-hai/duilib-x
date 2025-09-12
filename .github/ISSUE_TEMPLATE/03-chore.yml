@@ -1,0 +1,13 @@
+name: 🧹 [Chore] Miscellaneous Issues / 杂项问题
+description: Report module and miscellaneous chore issues / 提交模块及杂项事务问题
+title: "[Chore]: "
+labels: ["chore"]
+assignees: []
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description / 问题描述
+      placeholder: Briefly describe the chore issue / 简要描述杂项问题
+    validations:
+      required: true

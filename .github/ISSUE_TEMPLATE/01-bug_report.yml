@@ -1,0 +1,40 @@
+name: 🐛 Bug Report / BUG反馈
+description: I've encountered a BUG or unexpected behavior / 我遇到了BUG或奇怪的行为
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the following form.
+        感谢您花时间反馈bug！请填写以下的表单
+
+        **Before submitting a bug report, you may**
+        - Check if the issue has already been reported in [existing issues](https://github.com/3ziye/duilib-x/issues), you may find a way to fix its
+        - Try reproducing the issue with the latest version, maybe the bug you've encountered have already been fixed
+
+        **在提交bug report前您可以**
+        - 看看[issues](https://github.com/3ziye/duilib-x/issues)里是不是已经有了同样的问题，或许能快速找到想要的解决方法
+        - 试一下最新版本，或许遇到的bug已经修了
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description / Bug 描述
+      description: |
+        What I want and what I've got / 我想要什么结果和实际上我遇到了什么问题
+      placeholder: |
+        For example: I want to log in after installed (what I'm expecting), but it failed with error 404 (what I've got)
+        例如：我期望能够部署后登录（想要的样子），但部署后登录总是报错404失败（实际遇到的情况）
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched for existing feature requests before creating this one
+          required: true
