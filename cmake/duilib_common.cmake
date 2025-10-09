@@ -94,7 +94,7 @@ endif()
 get_filename_component(DUILIB_ROOT "${CMAKE_CURRENT_LIST_DIR}/../" ABSOLUTE)
 set(DUILIB_LIB_PATH "${DUILIB_ROOT}/lib")
 set(DUILIB_BIN_PATH "${DUILIB_ROOT}/bin")
-set(DUILIB_LIBS duilib duilib-cximage duilib-webp duilib-png duilib-zlib)
+set(DUILIB_LIBS duilib duilib-cximage duilib-webp duilib-png)
 
 #CEF模块的源码根目录（CEF模块为可选项）
 if(DUILIB_ENABLE_CEF)
@@ -108,7 +108,7 @@ if(DUILIB_ENABLE_CEF)
             else()
                 set(DUILIB_CEF_LIB_PATH "${DUILIB_ROOT}/third-party/libcef_win_109/lib/Win32")
             endif()
-            set(DUILIB_CEF_WRAPPER_LIB_NAME libcef_dll_wrapper_109)
+            set(DUILIB_CEF_WRAPPER_LIB_NAME libcef_dll_wrapper)
         else()
             #使用CEF最新版本
             set(DUILIB_CEF_SRC_ROOT_DIR "${DUILIB_ROOT}/third-party/libcef_win")

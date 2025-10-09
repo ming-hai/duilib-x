@@ -21,6 +21,9 @@ if(MSVC)
     # 设置C/C++编译选项（开启多线程编译）
     add_compile_options($<$<COMPILE_LANGUAGE:C>:/MP${CPU_CORES}>)
     add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/MP${CPU_CORES}>)
+	
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
+
 endif()
 
 # Windows 系统中使用Unicode编码
@@ -79,24 +82,24 @@ elseif(DUILIB_WINRES_FILE_NAME)
     target_sources(${PROJECT_NAME} PRIVATE "${DUILIB_WINRES_FILE_NAME}")
 endif()
 
-# if(MSVC)
-#     # 配置manifest文件
-#     target_sources(${PROJECT_NAME} PRIVATE 
-#         ${DUILIB_WIN_MANIFEST}
-#     )
-    
-#     # 使用MSVC编译时，需要设置子系统属性
-#     set_target_properties(${PROJECT_NAME} PROPERTIES
-#         LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup"
-#     )
-    
-#     if(DUILIB_ENABLE_CEF)
-#         #设置libcef.dll延迟加载
-#         target_link_options(${PROJECT_NAME} PRIVATE
-#             "/DELAYLOAD:libcef.dll"  # 指定延迟加载的DLL文件名
-#         )
-#     endif()
-# endif()
+if(MSVC AND DUILIB_ENABLE_CEF)
+    # 配置manifest文件
+    target_sources(${PROJECT_NAME} PRIVATE 
+        ${DUILIB_WIN_MANIFEST}
+    )
+  
+    # 使用MSVC编译时，需要设置子系统属性
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup"
+    )
+  
+    if(DUILIB_ENABLE_CEF)
+        #设置libcef.dll延迟加载
+        target_link_options(${PROJECT_NAME} PRIVATE
+            "/DELAYLOAD:libcef.dll"  # 指定延迟加载的DLL文件名
+        )
+    endif()
+endif()
 
 # Windows平台所依赖的库
 set(DUILIB_WINDOWS_LIBS Comctl32 Imm32 Opengl32 User32 shlwapi)

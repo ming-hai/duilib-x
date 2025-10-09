@@ -62,7 +62,7 @@
  #define PI 3.141592653589793f
 #endif
 
-#include "../../duilib_config.h"
+#include "../../duilib/duilib_config.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -199,7 +199,7 @@ typedef struct tagcomplex {
 #define _cabs(c) sqrt(c.x*c.x+c.y*c.y)
 
 #if defined(linux) || defined(__linux) || defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
-    // Linux/macOS 平台使用 strcasecmp 或 strncasecmp
+    // Linux/macOS 平台使用 strcasecmp �?strncasecmp
     #ifdef DUILIB_UNICODE
         #define _tcsnicmp(a,b,c) wcsncasecmp(a,b,c)  // Unicode 版本
     #else

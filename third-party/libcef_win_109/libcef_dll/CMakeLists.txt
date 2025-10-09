@@ -755,7 +755,21 @@ set(LIBCEF_WRAPPER_SRCS_MAC
 LIBCEF_APPEND_PLATFORM_SOURCES(LIBCEF_WRAPPER_SRCS)
 source_group(libcef_dll\\\\wrapper FILES ${LIBCEF_WRAPPER_SRCS})
 
-add_library(${CEF_TARGET}
+# duilib
+get_filename_component(DUILIB_SRC_ROOT_DIR "${PROJECT_SOURCE_DIR}/../../" ABSOLUTE)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${DUILIB_SRC_ROOT_DIR}/lib/")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${DUILIB_SRC_ROOT_DIR}/lib/")
+
+set(CMAKE_BUILD_TYPE $<$<CONFIG:Debug>:"Debug">;$<$<CONFIG:Release>:"Release">)
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_definitions(-D_ITERATOR_DEBUG_LEVEL=0)
+else()
+    add_definitions(-D_ITERATOR_DEBUG_LEVEL=2)
+    add_definitions(-D_HAS_ITERATOR_DEBUGGING=1)
+endif()
+
+
+add_library(${CEF_TARGET} STATIC
   ${LIBCEF_SRCS}
   ${LIBCEF_BASE_SRCS}
   ${LIBCEF_CPPTOC_SRCS}

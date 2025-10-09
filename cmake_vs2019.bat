@@ -1,0 +1,1 @@
+cmake -G "Visual Studio 16 2019" -A "Win32" -S . -B build_vs2019 -DCMAKE_POLICY_VERSION_MINIMUM=3.15 -DDUILIB_MD=OFF -DCMAKE_BUILD_TYPE=Release

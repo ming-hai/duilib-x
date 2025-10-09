@@ -27,11 +27,11 @@ set(CMAKE_CXX_STANDARD 17) # C++17
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # C++17
 
 # duilib
-get_filename_component(DUILIB_SRC_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
+get_filename_component(DUILIB_SRC_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../" ABSOLUTE)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${DUILIB_SRC_ROOT_DIR}/lib/")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${DUILIB_SRC_ROOT_DIR}/lib/")
 
-include_directories(${CMAKE_CURRENT_LIST_DIR}/../zlib)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/../zlib ${CMAKE_CURRENT_BINARY_DIR}/../libpng)
 
 set(CXIMAGE_HDRS
     xfile.h

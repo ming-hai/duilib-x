@@ -112,9 +112,9 @@ endif()
 message(STATUS "Building for target architecture: ${PNG_TARGET_ARCHITECTURE}")
 
 # duilib: please build zlib first
-get_filename_component(DUILIB_SRC_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
+get_filename_component(DUILIB_SRC_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../" ABSOLUTE)
 set(ZLIB_ROOT "${DUILIB_SRC_ROOT_DIR}/third-party/zlib/")
-set(ZLIB_LIBRARY "${DUILIB_SRC_ROOT_DIR}/duilib/lib/libduilib-zlib.a")
+set(ZLIB_LIBRARY "${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-zlib.lib")
 message(STATUS "ZLIB_ROOT: ${ZLIB_ROOT}")
 message(STATUS "ZLIB_LIBRARY: ${ZLIB_LIBRARY}")
 # duilib end

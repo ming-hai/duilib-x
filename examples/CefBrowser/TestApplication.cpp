@@ -28,6 +28,10 @@ int TestApplication::Run(int argc, char** argv)
     ui::FilePath resourcePath = ui::GlobalManager::GetDefaultResourcePath(true);
     ui::GlobalManager::Instance().Startup(ui::LocalFilesResParam(resourcePath), thread.GetDpiInitParam());
 
+    //指定CEF模块相关路径
+    //ui::FilePath cefBinDir = ui::FilePathUtil::JoinFilePath(ui::FilePathUtil::GetCurrentModuleDirectory(), ui::FilePath("cef.win7"));
+    //ui::CefManager::GetInstance()->SetCefMoudlePath(cefBinDir.NativePath());
+
     //初始化CEF: 必须在GlobalManager初始化完成之后，因为初始化CEF过程中，会用到GlobalManager
     if (!ui::CefManager::GetInstance()->Initialize(true, _T("cef_browser"), argc, argv, nullptr)) {
         return 1;

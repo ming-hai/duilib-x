@@ -18,6 +18,7 @@ set(DUILIB_WINRES_FILE_NAME "${PROJECT_NAME}.rc")
 
 # 使用CEF模块
 set(DUILIB_ENABLE_CEF ON)
+set(DUILIB_CEF_109 ON)
 
 # 包含公共实现代码
 include("${DUILIB_SRC_ROOT_DIR}/cmake/duilib_common.cmake")

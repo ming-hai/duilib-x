@@ -6,6 +6,9 @@ endif()
 
 message(STATUS "current platform: ${CMAKE_SYSTEM_NAME}")
 
+set(DUILIB_ROOT ${PROJECT_SOURCE_DIR})
+
+message(STATUS "DUILIB_ROOT: ${DUILIB_ROOT}")
 # duilib
 # MSVC runtime library flags are selected by an abstraction.
 set(CMAKE_POLICY_DEFAULT_CMP0091 NEW)
@@ -17,6 +20,9 @@ else()
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 # duilib end
+
+#依赖库
+#include(../cmake/duilib_dependencies.cmake)
 
 project(duilib CXX C)
 
@@ -34,6 +40,8 @@ endif()
 set(CMAKE_CXX_STANDARD 20) # C++20
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # C++20
 
+option(BUILD_LIBCEF109 "Use libcef 109 Support Windows 7 or above" ON)
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")  # Windows
     add_definitions(-DUNICODE -D_UNICODE)
 endif()
@@ -48,6 +56,18 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")  # macOS
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")  # Linux
     set(CEF_LIB_DIR "libcef_linux")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")  # Windows
+if(BUILD_LIBCEF109)
+    set(CEF_LIB_DIR "libcef_win_109")
+
+    #使用CEF109版本Win7及以上
+    set(DUILIB_CEF_SRC_ROOT_DIR "${DUILIB_ROOT}/third-party/libcef_win_109")
+    if(DUILIB_BITS_64)
+        set(DUILIB_CEF_LIB_PATH "${DUILIB_ROOT}/third-party/libcef_win_109/lib/x64")
+    else()
+        set(DUILIB_CEF_LIB_PATH "${DUILIB_ROOT}/third-party/libcef_win_109/lib/Win32")
+    endif()
+    set(DUILIB_CEF_WRAPPER_LIB_NAME libcef_dll_wrapper)
+else()
     set(CEF_LIB_DIR "libcef_win")
 
     #使用CEF最新版本
@@ -58,6 +78,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")  # Windows
         set(DUILIB_CEF_LIB_PATH "${DUILIB_ROOT}/third-party/libcef_win/lib/Win32")
     endif()
     set(DUILIB_CEF_WRAPPER_LIB_NAME libcef_dll_wrapper)
+endif()
 
 elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")  # FreeBSD
     message(WARNING "CEF is not supported on FreeBSD - building without CEF support")
@@ -75,6 +96,8 @@ get_filename_component(SDL_SRC_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../third-part
 include_directories(${DUILIB_SRC_ROOT_DIR})
 include_directories(${SKIA_SRC_ROOT_DIR})
 include_directories("${SDL_SRC_ROOT_DIR}/include")
+include_directories(${DUILIB_CEF_SRC_ROOT_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../third-party/libpng)
 
 # Conditionally include CEF directory
 if(CEF_LIB_DIR AND NOT CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
@@ -227,11 +250,11 @@ endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
     find_package(Freetype REQUIRED)
     find_package(Fontconfig REQUIRED)
-    add_library(${PROJECT_NAME} ${LIBRARY_SOURCES})
+    add_library(${PROJECT_NAME} STATIC ${LIBRARY_SOURCES})
     target_link_libraries(${PROJECT_NAME} Freetype::Freetype Fontconfig::Fontconfig)
 else()
     # Create the library with the filtered sources
-    add_library(${PROJECT_NAME} ${LIBRARY_SOURCES})
+    add_library(${PROJECT_NAME} STATIC ${LIBRARY_SOURCES})
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -299,4 +322,36 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     
     target_compile_options(${PROJECT_NAME} PRIVATE ${DUILIB_COMPILER_FLAGS})
     target_compile_options(${PROJECT_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>: ${DUILIB_CXX_COMPILER_FLAGS}>)
+endif()
+
+
+if(MSVC)
+set(CMAKE_BUILD_TYPE $<$<CONFIG:Debug>:"Debug">;$<$<CONFIG:Release>:"Release">)
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	MESSAGE(STATUS ${PROJECT_NAME}"===> Release")
+    add_definitions(-D_ITERATOR_DEBUG_LEVEL=0)
+    target_link_libraries(${PROJECT_NAME} 
+    ${DUILIB_SRC_ROOT_DIR}/lib/release/duilib-cximage.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/release/duilib-webp.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/release/duilib-png.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/release/skia.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/release/svg.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/release/skshaper.lib
+    ${DUILIB_SRC_ROOT_DIR}/third-party/libcef_win_109/lib/Win32/libcef.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/libcef_dll_wrapper.lib
+    Comctl32 Imm32 Opengl32 User32 shlwapi)
+else()
+	MESSAGE(STATUS ${PROJECT_NAME}"===> Debug")
+    add_definitions(-D_ITERATOR_DEBUG_LEVEL=2)
+    target_link_libraries(${PROJECT_NAME} 
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-cximage.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-webp.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-png.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/skia.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/svg.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/skshaper.lib
+    ${DUILIB_SRC_ROOT_DIR}/third-party/libcef_win_109/lib/Win32/libcef.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/libcef_dll_wrapper.lib
+    Comctl32 Imm32 Opengl32 User32 shlwapi)
+endif()
 endif()
