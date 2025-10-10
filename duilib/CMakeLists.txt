@@ -324,15 +324,14 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>: ${DUILIB_CXX_COMPILER_FLAGS}>)
 endif()
 
-
 if(MSVC)
-set(CMAKE_BUILD_TYPE $<$<CONFIG:Debug>:"Debug">;$<$<CONFIG:Release>:"Release">)
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	MESSAGE(STATUS ${PROJECT_NAME}"===> Release")
     add_definitions(-D_ITERATOR_DEBUG_LEVEL=0)
     target_link_libraries(${PROJECT_NAME} 
     ${DUILIB_SRC_ROOT_DIR}/lib/release/duilib-cximage.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/release/duilib-webp.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/release/duilib-zlib.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/release/duilib-png.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/release/skia.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/release/svg.lib
@@ -346,6 +345,7 @@ else()
     target_link_libraries(${PROJECT_NAME} 
     ${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-cximage.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-webp.lib
+    ${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-zlib.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/debug/duilib-png.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/debug/skia.lib
     ${DUILIB_SRC_ROOT_DIR}/lib/debug/svg.lib
